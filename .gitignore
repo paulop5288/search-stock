@@ -1,0 +1,6 @@
+# IntelliJ & target
+${env.WORKSPACE}
+*.idea
+*.iml
+*.log
+target

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<SplitPane fx:id="rootPane" dividerPositions="0.29797979797979796" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.xibo.app.controller.RootController">
+    <items>
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="175.0">
+            <children>
+                <Label layoutX="55.0" layoutY="14.0" text="数据读取栏" textAlignment="CENTER" AnchorPane.topAnchor="14.0" />
+                <Separator layoutX="2.0" layoutY="29.0" prefWidth="200.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="43.0" />
+                <Label layoutX="48.0" layoutY="81.0" text="历史数据查询" />
+                <Label layoutX="59.0" layoutY="126.0" text="起始日期:" />
+                <DatePicker fx:id="beginDatePicker" layoutX="12.0" layoutY="142.0" prefWidth="150.0" />
+                <DatePicker fx:id="endDatePicker" layoutX="12.0" layoutY="184.0" prefWidth="150.0" />
+                <Label layoutX="59.0" layoutY="168.0" text="结束日期:" />
+                <ComboBox fx:id="searchTypeBox" layoutX="12.0" layoutY="249.0" onAction="#selectSearchType" prefWidth="150.0" />
+                <Label layoutX="48.0" layoutY="233.0" text="查询股票种类" />
+                <TextField fx:id="stockIdField" layoutX="68.0" layoutY="281.0" onAction="#confirmStockId" prefHeight="26.0" prefWidth="94.0" />
+                <Button fx:id="confirmButton" layoutX="66.0" layoutY="314.0" mnemonicParsing="false" onAction="#confirmStockId" text="确认" />
+                <Label layoutX="12.0" layoutY="286.0" text="股票代码:" />
+            <ProgressBar fx:id="loadingProgressBar" layoutX="5.0" layoutY="352.0" prefHeight="17.0" prefWidth="167.0" progress="0.0" />
+            </children>
+        </AnchorPane>
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="415.0" SplitPane.resizableWithParent="false">
+            <children>
+                <Label layoutX="14.0" layoutY="14.0" text="筛选条件:" />
+                <ComboBox fx:id="conditionFilterBox" layoutX="70.0" layoutY="9.0" prefHeight="26.0" prefWidth="120.0" />
+                <ComboBox fx:id="dataFilterBox" layoutX="281.0" layoutY="9.0" prefWidth="120.0" />
+                <Label layoutX="225.0" layoutY="14.0" text="关联数据:" />
+                <ComboBox fx:id="previousDayBox" layoutX="31.0" layoutY="35.0" prefWidth="68.0" />
+                <Label layoutX="14.0" layoutY="40.0" text="前 " />
+                <Label layoutX="225.0" layoutY="40.0" text="其他关联:" />
+                <ComboBox fx:id="otherFilterBox" layoutX="281.0" layoutY="35.0" prefWidth="120.0" />
+                <Button fx:id="filterButton" layoutX="101.0" layoutY="116.0" mnemonicParsing="false" onAction="#filterStock" prefHeight="26.0" prefWidth="58.0" text="筛选" />
+                <Button fx:id="outputButton" layoutX="259.0" layoutY="116.0" mnemonicParsing="false" onAction="#outputData" text="导出" />
+                <Separator layoutX="4.0" layoutY="67.0" prefHeight="3.0" prefWidth="389.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="4.0" />
+            <Label layoutX="105.0" layoutY="40.0" text="后 " />
+            <ComboBox fx:id="followingDayBox" layoutX="122.0" layoutY="35.0" prefWidth="68.0" />
+            <TextArea fx:id="logArea" layoutX="16.0" layoutY="229.0" prefHeight="157.0" prefWidth="386.0" />
+            <Button fx:id="clearAllButton" layoutX="335.0" layoutY="200.0" mnemonicParsing="false" onAction="#clearAll" text="Clear all" />
+            <Button layoutX="16.0" layoutY="200.0" mnemonicParsing="false" onAction="#loadCache" text="Load" />
+            <Button layoutX="75.0" layoutY="200.0" mnemonicParsing="false" onAction="#saveCache" text="Save" />
+            </children>
+        </AnchorPane>
+    </items>
+</SplitPane>
