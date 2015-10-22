@@ -39,9 +39,9 @@ public class RootController implements Initializable {
     private ObservableList<String> dayList;
     // instance variable
     private Client client;
-    private List<String> tempCache = new LinkedList<>();
+    private List<StockInfo> tempCache = new LinkedList<>();
     private InMemoryCache cache = new InMemoryCache();
-    private ArrayList<StockInfo> selectedStock;
+    private List<List<StockInfo>> selectedStocks;
     private String tempJSON;
     private FileChooser fileChooser = new FileChooser();
 
@@ -72,24 +72,22 @@ public class RootController implements Initializable {
                 fetchSingleStockData();
                 break;
         }
-//        XSSFWorkbook workbook = new XSSFWorkbook();
     }
 
     public void filterStock(ActionEvent actionEvent) {
-
+        selectedStocks = new ArrayList<>();
+        int previousDays = previousDayBox.getSelectionModel().getSelectedIndex();
+        int followingDays = followingDayBox.getSelectionModel().getSelectedIndex();
+        for (StockInfo stock : tempCache) {
+            selectedStocks.add(cache.findStockInfoBtw(stock, previousDays, followingDays));
+        }
+        log(String.format("获得 %d 涨停股票, 前%d天, 后%d天 相关数据", selectedStocks.size(), previousDays, followingDays));
     }
 
     public void outputData(ActionEvent actionEvent) {
         log("正在导出数据");
+        System.out.println(selectedStocks);
         ExcelFactory excelFactory = new ExcelFactory();
-    }
-
-    public void storeJSONToTempCache(String json) {
-        tempCache.add(json);
-    }
-
-    public void clearTempCache() {
-        tempCache.clear();
     }
 
     @Override
@@ -171,10 +169,10 @@ public class RootController implements Initializable {
     }
 
     private void findLimitUpsInStocksFrom(List<StockInfo> stocks) {
-        List<StockInfo> selectedStock = stocks.stream().filter(s->s.isLimitUp()).collect(Collectors.toList());
+        tempCache = stocks.stream().filter(s->s.isLimitUp()).collect(Collectors.toList());
         String tradeDate = stocks.get(0).getTradeDate();
-        log(String.format("已经获得 %s 全部涨停股票数据, 共有 %d 只股票", tradeDate, selectedStock.size()));
-        client.readMultiDataFromAPI(selectedStock);
+        log(String.format("已经获得 %s 全部涨停股票数据, 共有 %d 只股票", tradeDate, tempCache.size()));
+        client.readMultiDataFromAPI(tempCache);
     }
 
     private void initUI() {

@@ -154,7 +154,7 @@ public class StockInfo implements Serializable {
 
     @Override
     public String toString() {
-        double rate = closePrice / actPreClosePrice -1;
-        return String.format("StockId: %s ShortName: %s Rate %.2f%%. \n", secID, secShortName, rate * 100);
+        double rate = closePrice / actPreClosePrice - 1;
+        return String.format("StockId: %s ShortName: %s Date: %s Rate: %.2f%% DealAmount: %d. \n", secID, secShortName, tradeDate, rate * 100, dealAmount);
     }
 }

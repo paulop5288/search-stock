@@ -32,4 +32,22 @@ public class InMemoryCache implements Serializable {
         return data != null;
     }
 
+    public List<StockInfo> findStockInfoBtw(StockInfo stock, int lastDays, int afterDays) {
+        List<StockInfo> selected = new ArrayList<>();
+        int beginIndex = 0;
+        List<StockInfo> stocks = getStocks(stock.getTicker());
+        for (int i = 0; i < stocks.size(); i++) {
+            if (stocks.get(i).getTradeDate().equals(stock.getTradeDate())) {
+                beginIndex = i;
+                break;
+            }
+        }
+        if (beginIndex - lastDays >= 0 && beginIndex + afterDays < stocks.size()) {
+            for (int i = beginIndex - lastDays;i <= beginIndex + afterDays; i ++) {
+                selected.add(stocks.get(i));
+            }
+        }
+        return selected;
+    }
+
 }
