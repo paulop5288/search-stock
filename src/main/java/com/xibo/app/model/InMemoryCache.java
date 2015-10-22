@@ -43,14 +43,28 @@ public class InMemoryCache implements Serializable {
         for (int i = 0; i < stocks.size(); i++) {
             if (stocks.get(i).getTradeDate().equals(stock.getTradeDate())) {
                 beginIndex = i;
+                selected.add(stocks.get(beginIndex));
                 break;
             }
         }
 
-        if (beginIndex - previousDays >= 0 && beginIndex + followingDays < stocks.size()) {
-            for (int i = beginIndex - previousDays;i <= beginIndex + followingDays; i ++) {
-                selected.add(stocks.get(i));
+        for (int i = 1; i <= previousDays; i++) {
+            StockInfo addingStock = null;
+            try {
+                addingStock = stocks.get(beginIndex - i);
+            } catch (Exception e) {
+
             }
+            selected.addFirst(addingStock);
+        }
+        for (int i = 1; i <= followingDays; i++) {
+            StockInfo addingStock = null;
+            try {
+                addingStock = stocks.get(beginIndex - i);
+            } catch (Exception e) {
+
+            }
+            selected.addLast(addingStock);
         }
         return selected;
     }

@@ -35,10 +35,17 @@ public class ExcelFactory {
             row.createCell(cellIndex++).setCellValue(stocks.get(currentIndex).getHighestPrice());
             for (StockInfo stock : stocks) {
                 if (!stock.equals(stocks.get(currentIndex))) {
-                    row.createCell(cellIndex++).setCellValue(stock.getClosePrice());
-                    row.createCell(cellIndex++).setCellValue(stock.getOpenPrice());
-                    row.createCell(cellIndex++).setCellValue(stock.getLowestPrice());
-                    row.createCell(cellIndex++).setCellValue(stock.getHighestPrice());
+                    if (stock == null) {
+                        row.createCell(cellIndex++).setCellValue("不存在");
+                        row.createCell(cellIndex++).setCellValue("不存在");
+                        row.createCell(cellIndex++).setCellValue("不存在");
+                        row.createCell(cellIndex++).setCellValue("不存在");
+                    } else {
+                        row.createCell(cellIndex++).setCellValue(stock.getClosePrice());
+                        row.createCell(cellIndex++).setCellValue(stock.getOpenPrice());
+                        row.createCell(cellIndex++).setCellValue(stock.getLowestPrice());
+                        row.createCell(cellIndex++).setCellValue(stock.getHighestPrice());
+                    }
                 }
             }
         }

@@ -160,7 +160,7 @@ public class RootController implements Initializable {
         updateUI(UIStatus.SEARCH_CONFIRMED);
         String beginDate = beginDatePicker.getValue().toString().replace("-", "");
         System.out.println("Fetch all stock data in: " + beginDate);
-        client.readDataFromAPI("/api/market/getMktEqud.json?field=&tradeDate=" + beginDate, (s)-> {
+        client.readDataFromAPI("/api/market/getMktEqud.json?field=&tradeDate=" + beginDate, s-> {
 
             if (s != null) {
                 log(String.format("正在处理数据..."));
