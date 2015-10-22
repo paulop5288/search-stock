@@ -16,28 +16,60 @@ public class ExcelFactory {
         
     }
     
-    public void createExcelFrom(List<List<StockInfo>> contents) {
+    public void createExcelFrom(List<List<StockInfo>> contents, int currentIndex) {
         workbook = new XSSFWorkbook();
         XSSFSheet workSheet = workbook.createSheet("分析");
         int rowIndex = 0;
+        XSSFRow firstRow = workSheet.createRow(rowIndex++);
+        AddHeadersToRow(firstRow, contents, currentIndex);
         for (List<StockInfo> stocks : contents) {
+            if (stocks.size() == 0) continue;
             XSSFRow row = workSheet.createRow(rowIndex++);
             int cellIndex = 0;
-            row.createCell(cellIndex++).setCellValue(stocks.get(0).getTradeDate());
-            row.createCell(cellIndex++).setCellValue(stocks.get(0).getSecID());
-            row.createCell(cellIndex++).setCellValue(stocks.get(0).getSecShortName());
+            row.createCell(cellIndex++).setCellValue(stocks.get(currentIndex).getTradeDate());
+            row.createCell(cellIndex++).setCellValue(stocks.get(currentIndex).getSecID());
+            row.createCell(cellIndex++).setCellValue(stocks.get(currentIndex).getSecShortName());
+            row.createCell(cellIndex++).setCellValue(stocks.get(currentIndex).getClosePrice());
+            row.createCell(cellIndex++).setCellValue(stocks.get(currentIndex).getOpenPrice());
+            row.createCell(cellIndex++).setCellValue(stocks.get(currentIndex).getLowestPrice());
+            row.createCell(cellIndex++).setCellValue(stocks.get(currentIndex).getHighestPrice());
             for (StockInfo stock : stocks) {
-                double rate = stock.getClosePrice() / stock.getActPreClosePrice() - 1;
-                row.createCell(cellIndex++).setCellValue(rate * 100 + "%");
+                if (!stock.equals(stocks.get(currentIndex))) {
+                    row.createCell(cellIndex++).setCellValue(stock.getClosePrice());
+                    row.createCell(cellIndex++).setCellValue(stock.getOpenPrice());
+                    row.createCell(cellIndex++).setCellValue(stock.getLowestPrice());
+                    row.createCell(cellIndex++).setCellValue(stock.getHighestPrice());
+                }
             }
         }
-        XSSFRow row =workSheet.createRow(0);
-        XSSFCell cell = row.createCell(0);
-        cell.setCellValue("good");
-
+    }
+    private void AddHeadersToRow(XSSFRow row, List<List<StockInfo>> contents, int currentIndex) {
+        int cellIndex = 0;
+        row.createCell(cellIndex++).setCellValue("日期");
+        row.createCell(cellIndex++).setCellValue("股票代码");
+        row.createCell(cellIndex++).setCellValue("股票名称");
+        row.createCell(cellIndex++).setCellValue("当日收盘价");
+        row.createCell(cellIndex++).setCellValue("当日开盘价");
+        row.createCell(cellIndex++).setCellValue("当日最低价");
+        row.createCell(cellIndex++).setCellValue("当日最高价");
+        for (int i = 0; i < contents.get(0).size(); i++) {
+            if (i < currentIndex) {
+                row.createCell(cellIndex++).setCellValue("前" + (currentIndex - i) +"日收盘价");
+                row.createCell(cellIndex++).setCellValue("前" + (currentIndex - i) +"日开盘价");
+                row.createCell(cellIndex++).setCellValue("前" + (currentIndex - i) +"日最低价");
+                row.createCell(cellIndex++).setCellValue("前" + (currentIndex - i) +"日最高价");
+            } else if (i > currentIndex) {
+                row.createCell(cellIndex++).setCellValue("后" + (i - currentIndex) + "日收盘价");
+                row.createCell(cellIndex++).setCellValue("后" + (i - currentIndex) + "日开盘价");
+                row.createCell(cellIndex++).setCellValue("后" + (i - currentIndex) + "日最低价");
+                row.createCell(cellIndex++).setCellValue("后" + (i - currentIndex) + "日最高价");
+            }
+        }
+    }
+    public void saveFileTo(String location, String name) {
         try {
             FileOutputStream out =
-                    new FileOutputStream(new File("new.xls"));
+                    new FileOutputStream(new File(location + "/" + name));
             workbook.write(out);
             out.close();
         } catch (IOException e) {

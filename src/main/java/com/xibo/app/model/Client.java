@@ -33,7 +33,8 @@ public class Client {
     public Client(RootController delegate) {
         this.delegate = delegate;
         properties = new Properties();
-        readConfigFrom(getClass().getResource("/config.properties").getFile());
+        appKey = "ce2f2460f3fe70dc19d92e2722894d37102cca81ff5728bdd1979d8a3eadd3e7";
+        //readConfigFrom(getClass().getResource("/config.properties").getFile());
     }
 
     public void readDataFromAPI(String endPoint, CallbackHandler handler) {

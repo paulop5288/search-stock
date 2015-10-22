@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
 import java.io.*;
@@ -44,7 +45,7 @@ public class RootController implements Initializable {
     private List<List<StockInfo>> selectedStocks;
     private String tempJSON;
     private FileChooser fileChooser = new FileChooser();
-
+    private ExcelFactory excelFactory = new ExcelFactory();
     private DataReader dataReader = new DataReader();
     public RootController() {
         conditionList = FXCollections.observableArrayList(
@@ -87,7 +88,13 @@ public class RootController implements Initializable {
     public void outputData(ActionEvent actionEvent) {
         log("正在导出数据");
         System.out.println(selectedStocks);
-        ExcelFactory excelFactory = new ExcelFactory();
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        fileChooser.setTitle("Save Excel File");
+        File fileLocation = directoryChooser.showDialog(this.logArea.getScene().getWindow());
+        excelFactory.createExcelFrom(selectedStocks, previousDayBox.getSelectionModel().getSelectedIndex());
+        String title = selectedStocks.get(0).get(previousDayBox.getSelectionModel().getSelectedIndex()).getTradeDate();
+        excelFactory.saveFileTo(fileLocation.getAbsolutePath(), title + "涨停股票数据统计.xlsx");
+        log("成功保存excel");
     }
 
     @Override
