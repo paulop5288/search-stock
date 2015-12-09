@@ -10,42 +10,38 @@ import java.io.Serializable;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class StockInfo implements Serializable {
-    private int accumAdjFactor, dealAmount;
-    private long marketValue, negMarketValue;
-    private double actPreClosePrice, closePrice, highestPrice, lowestPrice, openPrice, preClosePrice, turnoverRate;
-    private String exchangeCD, secID, secShortName, ticker, tradeDate;
+    private int dealAmount;
+    private double closePrice, highestPrice, lowestPrice, openPrice, preClosePrice;
+    private String secID, secShortName, ticker, tradeDate;
+
+    public StockInfo(String ticker, String tradeDate, String secID, String secShortName, double closePrice, double highestPrice, double lowestPrice, double openPrice, double preClosePrice, int dealAmount) {
+        this.tradeDate = tradeDate;
+        this.closePrice = closePrice;
+        this.highestPrice = highestPrice;
+        this.lowestPrice = lowestPrice;
+        this.openPrice = openPrice;
+        this.preClosePrice = preClosePrice;
+        this.secID = secID;
+        this.secShortName = secShortName;
+        this.ticker = ticker;
+        this.dealAmount = dealAmount;
+    }
+
+    public StockInfo() {
+
+    }
 
     public boolean isLimitUp() {
-        if (actPreClosePrice == 0) return false;
+        if (!isInTrading()) return false;
         if (secShortName.contains("ST")) {
-            return closePrice / actPreClosePrice > 1.049;
+            return closePrice / openPrice > 1.049;
         }
-        return closePrice / actPreClosePrice > 1.099;
+        return closePrice / openPrice > 1.099;
     }
 
-    public long getMarketValue() {
-        return marketValue;
-    }
-
-    public void setMarketValue(long marketValue) {
-        this.marketValue = marketValue;
-    }
-
-    public long getNegMarketValue() {
-        return negMarketValue;
-    }
-
-    public void setNegMarketValue(long negMarketValue) {
-        this.negMarketValue = negMarketValue;
-    }
-
-    public int getAccumAdjFactor() {
-
-        return accumAdjFactor;
-    }
-
-    public void setAccumAdjFactor(int accumAdjFactor) {
-        this.accumAdjFactor = accumAdjFactor;
+    public boolean isInTrading() {
+        if (openPrice == 0) return false;
+        return true;
     }
 
     public int getDealAmount() {
@@ -54,14 +50,6 @@ public class StockInfo implements Serializable {
 
     public void setDealAmount(int dealAmount) {
         this.dealAmount = dealAmount;
-    }
-
-    public double getActPreClosePrice() {
-        return actPreClosePrice;
-    }
-
-    public void setActPreClosePrice(double actPreClosePrice) {
-        this.actPreClosePrice = actPreClosePrice;
     }
 
     public double getClosePrice() {
@@ -104,22 +92,6 @@ public class StockInfo implements Serializable {
         this.preClosePrice = preClosePrice;
     }
 
-    public double getTurnoverRate() {
-        return turnoverRate;
-    }
-
-    public void setTurnoverRate(double turnoverRate) {
-        this.turnoverRate = turnoverRate;
-    }
-
-    public String getExchangeCD() {
-        return exchangeCD;
-    }
-
-    public void setExchangeCD(String exchangeCD) {
-        this.exchangeCD = exchangeCD;
-    }
-
     public String getSecID() {
         return secID;
     }
@@ -149,12 +121,14 @@ public class StockInfo implements Serializable {
     }
 
     public void setTradeDate(String tradeDate) {
-        this.tradeDate = tradeDate;
+
+        this.tradeDate = tradeDate.substring(0,10);
     }
 
     @Override
     public String toString() {
-        double rate = closePrice / actPreClosePrice - 1;
+        double rate = closePrice / openPrice - 1;
         return String.format("StockId: %s ShortName: %s Date: %s Rate: %.2f%% DealAmount: %d. \n", secID, secShortName, tradeDate, rate * 100, dealAmount);
     }
+
 }

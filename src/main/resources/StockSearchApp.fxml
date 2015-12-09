@@ -14,14 +14,11 @@
                 <Label layoutX="48.0" layoutY="81.0" text="历史数据查询" />
                 <Label layoutX="59.0" layoutY="126.0" text="起始日期:" />
                 <DatePicker fx:id="beginDatePicker" layoutX="12.0" layoutY="142.0" prefWidth="150.0" />
-                <DatePicker fx:id="endDatePicker" layoutX="12.0" layoutY="184.0" prefWidth="150.0" />
-                <Label layoutX="59.0" layoutY="168.0" text="结束日期:" />
                 <ComboBox fx:id="searchTypeBox" layoutX="12.0" layoutY="249.0" onAction="#selectSearchType" prefWidth="150.0" />
                 <Label layoutX="48.0" layoutY="233.0" text="查询股票种类" />
-                <TextField fx:id="stockIdField" layoutX="68.0" layoutY="281.0" onAction="#confirmStockId" prefHeight="26.0" prefWidth="94.0" />
-                <Button fx:id="confirmButton" layoutX="66.0" layoutY="314.0" mnemonicParsing="false" onAction="#confirmStockId" text="确认" />
-                <Label layoutX="12.0" layoutY="286.0" text="股票代码:" />
+                <Button fx:id="confirmButton" layoutX="120.0" layoutY="314.0" mnemonicParsing="false" onAction="#confirmStockId" text="确认" />
             <ProgressBar fx:id="loadingProgressBar" layoutX="5.0" layoutY="352.0" prefHeight="17.0" prefWidth="167.0" progress="0.0" />
+            <Label fx:id="currentProgress" layoutX="12.0" layoutY="319.0" prefHeight="16.0" prefWidth="100.0" text="N/A" />
             </children>
         </AnchorPane>
         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="415.0" SplitPane.resizableWithParent="false">
@@ -34,8 +31,8 @@
                 <Label layoutX="14.0" layoutY="40.0" text="前 " />
                 <Label layoutX="225.0" layoutY="40.0" text="其他关联:" />
                 <ComboBox fx:id="otherFilterBox" layoutX="281.0" layoutY="35.0" prefWidth="120.0" />
-                <Button fx:id="filterButton" layoutX="101.0" layoutY="116.0" mnemonicParsing="false" onAction="#filterStock" prefHeight="26.0" prefWidth="58.0" text="筛选" />
-                <Button fx:id="outputButton" layoutX="259.0" layoutY="116.0" mnemonicParsing="false" onAction="#outputData" text="导出" />
+                <Button fx:id="filterButton" layoutX="127.0" layoutY="129.0" mnemonicParsing="false" onAction="#filterStock" prefHeight="26.0" prefWidth="58.0" text="筛选" />
+                <Button fx:id="outputButton" layoutX="227.0" layoutY="129.0" mnemonicParsing="false" onAction="#outputData" prefHeight="26.0" prefWidth="58.0" text="导出" />
                 <Separator layoutX="4.0" layoutY="67.0" prefHeight="3.0" prefWidth="389.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="4.0" />
             <Label layoutX="105.0" layoutY="40.0" text="后 " />
             <ComboBox fx:id="followingDayBox" layoutX="122.0" layoutY="35.0" prefWidth="68.0" />
@@ -43,6 +40,8 @@
             <Button fx:id="clearAllButton" layoutX="335.0" layoutY="200.0" mnemonicParsing="false" onAction="#clearAll" text="Clear all" />
             <Button layoutX="16.0" layoutY="200.0" mnemonicParsing="false" onAction="#loadCache" text="Load" />
             <Button layoutX="75.0" layoutY="200.0" mnemonicParsing="false" onAction="#saveCache" text="Save" />
+            <Button layoutX="325.0" layoutY="70.0" mnemonicParsing="false" onAction="#initCache" text="initCache" />
+            <Button layoutX="325.0" layoutY="103.0" mnemonicParsing="false" onAction="#buildCache" prefHeight="26.0" prefWidth="74.0" text="Build" />
             </children>
         </AnchorPane>
     </items>

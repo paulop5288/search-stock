@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
  * Created by wangx on 19/10/2015.
  */
 public class InMemoryCache implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Map<String, List<StockInfo>> cache = new HashMap<>();
 
     public void store(List<StockInfo> stocks) {
@@ -19,6 +21,18 @@ public class InMemoryCache implements Serializable {
 
     public List<StockInfo> getStocks(String ticker) {
         return cache.get(ticker);
+    }
+
+    public List<StockInfo> findLimitUpStocksOn(String date) {
+        List<StockInfo> list = new ArrayList<>();
+        for (Map.Entry<String,List<StockInfo>> entry : cache.entrySet()) {
+            for (StockInfo stock : entry.getValue()) {
+                if (stock.getTradeDate().equals(date) && stock.isLimitUp()) {
+                    list.add(stock);
+                }
+            }
+        }
+        return list;
     }
 
     public String getLastestDateFor(StockInfo stock) {

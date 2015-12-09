@@ -5,5 +5,4 @@ package com.xibo.app.model;
  */
 public interface CallbackHandler {
     public void callback(String data);
-
 }

@@ -4,6 +4,9 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+
 /**
  * Unit test for simple App.
  */
@@ -33,6 +36,7 @@ public class AppTest
      */
     public void testApp()
     {
-        assertTrue( true );
+        int i = 0;
+        System.out.println(++i);
     }
 }
