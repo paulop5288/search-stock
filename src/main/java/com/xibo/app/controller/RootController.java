@@ -77,6 +77,8 @@ public class RootController implements Initializable {
     }
 
     public void outputData(ActionEvent actionEvent) {
+        confirmStockId(null);
+        filterStock(null);
         log("正在导出数据");
         System.out.println(selectedStocks);
         DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -118,7 +120,7 @@ public class RootController implements Initializable {
         setupComboBox(searchTypeBox, searchTypeList);
         setupComboBox(previousDayBox, dayList);
         setupComboBox(followingDayBox, dayList);
-
+        followingDayBox.getSelectionModel().select(5);
         logArea.setEditable(false);
         logArea.setWrapText(true);
         log("Application started ...");
@@ -220,6 +222,7 @@ public class RootController implements Initializable {
             if (s != null) {
                 log("正在处理数据...");
                 existingStocks = dataReader.readStocksFrom(s);
+                cache.storeExistingStocks(existingStocks);
                 if (existingStocks != null) {
                     log("成功初始化缓存");
                 } else {
@@ -235,8 +238,6 @@ public class RootController implements Initializable {
         Platform.runLater(() -> currentProgress.setText(progress));
     }
 
-    private int progress;
-    int interval = 100;
     private ExecutorService thread = Executors.newSingleThreadExecutor();
 
     public void buildCache(ActionEvent actionEvent) {
@@ -245,7 +246,6 @@ public class RootController implements Initializable {
         setProgress("0");
         thread.submit(() -> {
             client.readMultiDataFromAPI(existingStocks);
-            log("完成 " + progress + "/" + existingStocks.size());
         });
 
         System.out.println(existingStocks);

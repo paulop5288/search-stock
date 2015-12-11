@@ -9,14 +9,15 @@ import java.util.stream.Collectors;
  */
 public class InMemoryCache implements Serializable {
     private static final long serialVersionUID = 1L;
-
+    private List<StockInfo> existingStocks = new ArrayList<>();
     private Map<String, List<StockInfo>> cache = new HashMap<>();
 
     public void store(List<StockInfo> stocks) {
-        List<StockInfo> filteredStocks = stocks.stream()
-                .filter(s -> s.getDealAmount() != 0)
-                .collect(Collectors.toList());
-        cache.put(stocks.get(0).getTicker(), filteredStocks);
+        cache.put(stocks.get(0).getTicker(), stocks);
+    }
+
+    public void storeExistingStocks(List<StockInfo> stocks) {
+        existingStocks = stocks;
     }
 
     public List<StockInfo> getStocks(String ticker) {
@@ -65,11 +66,12 @@ public class InMemoryCache implements Serializable {
         for (int i = 1; i <= previousDays; i++) {
             StockInfo addingStock = null;
             try {
-                addingStock = stocks.get(beginIndex - i);
+                addingStock = stocks.get(beginIndex + i);
+                selected.addFirst(addingStock);
             } catch (Exception e) {
 
             }
-            selected.addFirst(addingStock);
+
         }
         for (int i = 1; i <= followingDays; i++) {
             StockInfo addingStock = null;

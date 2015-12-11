@@ -21,7 +21,8 @@ public class DataReader {
         switch (retCode) {
             case SUCCESS:
                 try {
-                    return mapper.readValue(rawData.get("data").toString(), new TypeReference<List<StockInfo>>(){});
+                    return mapper.readValue(rawData.get("data").toString(), new TypeReference<List<StockInfo>>() {
+                    });
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -34,17 +35,21 @@ public class DataReader {
         ObjectMapper mapper = new ObjectMapper();
         JSONObject rawData = new JSONObject(json);
         RetCode retCode = extractRetCode(rawData);
-
+        List<StockInfo> result = null;
         switch (retCode) {
             case SUCCESS:
                 try {
-                    return mapper.readValue(rawData.get("data").toString(), new TypeReference<List<StockInfo>>(){});
+                    result = mapper.readValue(rawData.get("data").toString(), new TypeReference<List<StockInfo>>() {
+                    });
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 break;
         }
-        return null;
+        for (int i = 0; i < result.size() - 1; i++) {
+            result.get(i).setPrevStock(result.get(i + 1));
+        }
+        return result;
     }
 
     public RetCode extractRetCode(JSONObject rawData) {

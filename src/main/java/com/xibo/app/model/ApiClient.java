@@ -75,12 +75,11 @@ public class ApiClient {
 
     public String readDataFromAPIBlocking(String endPoint, Integer timeout, Integer times) {
         String s = null;
-        while (times > 0) {
+        for (int i = 0; i < times; i++) {
             s = readDataFromAPIBlocking(endPoint, timeout);
             if (s != null) {
                 return s;
             }
-            times--;
         }
         delegate.log("尝试" + times + "次失败");
         return s;
